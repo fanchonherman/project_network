@@ -1,4 +1,4 @@
-Welcome to __"Montpellier Network"__, in this section we will describe the repartition of tasks between the team members, we have chosen to break down the project into three main tasks, distributed between the team members as follows :
+Welcome to __"montpellier_network"__, in this section we will describe the repartition of tasks between the team members, we have chosen to break down the project into three main tasks, distributed between the team members as follows :
 
 * __Pre-processing__ : x1 has for task to download and process images of a car, a pedestrian and a bicycle, and will remove all pixels that don't need to appear on our video. 
 
