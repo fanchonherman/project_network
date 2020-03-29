@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 import network_func
 from matplotlib.collections import LineCollection
 
-%matplotlib notebook
-ox.config(log_console=True, use_cache=True)
+
 
 
 
