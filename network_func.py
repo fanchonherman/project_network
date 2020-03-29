@@ -1,9 +1,14 @@
 import networkx as nx
-import numpy as np
 import osmnx as ox
-import pandas as pd
 from ipywidgets import interact, interactive, fixed, interact_manual
-import ipywidgets as widgets
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import network_func
+from matplotlib.collections import LineCollection
+
+%matplotlib notebook
+ox.config(log_console=True, use_cache=True)
+
 
 
 def type_transport(transport):
@@ -26,4 +31,8 @@ def type_transport(transport):
     origin_node = ox.get_nearest_node(G, origin_point)
     destination_node = ox.get_nearest_node(G, destination_point)
     route = nx.shortest_path(G, origin_node, destination_node)
-    return(ox.plot_route_folium(G, route, route_width=2, route_color='hotpink'))
+    fig, ax = ox.plot_graph_route(G, route, origin_point=origin_point, destination_point=destination_point)
+    plt.show
+    return()
+
+
