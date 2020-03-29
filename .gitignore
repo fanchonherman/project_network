@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 __pycache__/
 .vscode/*
 *.egg-info/
 dist/
+=======
+cache
+>>>>>>> development
