@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 network==2.4
 osmnx==0.11.4
 matplotlib
+=======
+network==2.4
+osmnx==0.11.4
+matplotlib
+>>>>>>> 51247461700f1ef52970353f23ff0a48564643f4
