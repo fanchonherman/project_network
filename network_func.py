@@ -1,9 +1,13 @@
 import networkx as nx
-import numpy as np
 import osmnx as ox
-import pandas as pd
 from ipywidgets import interact, interactive, fixed, interact_manual
-import ipywidgets as widgets
+import matplotlib.animation as animation
+import matplotlib.pyplot as plt
+import network_func
+from matplotlib.collections import LineCollection
+
+
+
 
 
 def type_transport(transport):
@@ -30,6 +34,7 @@ def type_transport(transport):
     plt.show
     return()
 
+<<<<<<< HEAD
 def animation_type_transport(transport):
     G = ox.graph_from_place(
         'Montpellier, Hérault, France', network_type=transport)
@@ -56,3 +61,6 @@ def animation_type_transport(transport):
         fig, animate, frames=200, interval=100, blit=True, repeat=False)
     plt.show()
     return(ani)
+=======
+
+>>>>>>> ceafe8d9b498a50e6b057f4ba246e775a750708d
