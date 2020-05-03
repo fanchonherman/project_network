@@ -10,6 +10,7 @@ Welcome to Montpellier Network's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   network/makemap
 
 
 Indices and tables
