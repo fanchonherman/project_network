@@ -7,14 +7,14 @@ import ipywidgets as widgets
 
 
 def type_transport(transport):
-    """This function plot on interactive map of the shortest path for different type of transport from maison du Lez, Montpellier 
+    """This function plot on interactive map of the shortest path for different type of transport from Maison du Lez, Montpellier, France 
     to Place to Eugène Bataillon, Montpellier, France.
     
     Parameters
     ----------
     transport : type of transport to choose to plot his path
     
-     Returns
+    Returns
     -------
     an interactive map showing the shortest path
     """ 
@@ -31,6 +31,8 @@ def type_transport(transport):
     return()
 
 def animation_type_transport(transport):
+    """a faire la doc
+    """
     G = ox.graph_from_place(
         'Montpellier, Hérault, France', network_type=transport)
     origin_point = ox.geo_utils.geocode('Maison du Lez, Montpellier, France')

@@ -1,3 +1,3 @@
-__version__ = '0.01'
+__version__ = '0.0.1'
 
 from .make_map.code import *
