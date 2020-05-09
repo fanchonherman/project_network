@@ -1,5 +1,5 @@
 Commands to install network_montpellier package 
-=================================
+===================================================================
 
 .. role:: bash(code)
    :language: bash
