@@ -10,7 +10,23 @@ Welcome to Montpellier Network's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+Guide
+^^^^^
+
+.. toctree::
+   :maxdepth: 2
+   :Caption: Installation and contacts
+
+   usage/Installation
+   usage/contacts
+
+.. toctree::
+   :maxdepth: 2
+   :Caption: How to make a map
+
    network/makemap
+
+   
 
 
 Indices and tables
