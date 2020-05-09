@@ -18,7 +18,7 @@ Guide
    :Caption: Installation and contacts
 
    usage/installation
-   usage/contacts
+   usage/contact
 
 .. toctree::
    :maxdepth: 2
