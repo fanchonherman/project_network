@@ -1,6 +1,6 @@
 <p align="center">
   <strong> MONTPELLIER NETWORK </strong> <br>
-<img src="osmnx.jpg" style="vertical-align:middle" width="500" height='200' class='center' alt='logo'>
+<img src="osmnx.jpg" style="vertical-align:middle" width="500" height='300' class='center' alt='logo'>
 </p>
 
 This is a python package name montpellier_network, that has for goal to create a video and a widget showing a car, a pedestrian and a bicycle going from "La Maison du Lez" to "Place Eugène Bataillon" in Montpellier with the shortest path possible.
