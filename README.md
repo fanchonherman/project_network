@@ -7,8 +7,10 @@ This is a python package name montpellier_network, that has for goal to create a
 
 ## Installation 
 To install the package osmnx you can use this commands :
+```{bash}
 $ conda config --prepend channels conda-forge
 $ conda create -n ox --strict-channel-priority osmnx
+```
 If you have any trouble with the installation, follow this [link](https://github.com/NREL/OpenOA/blob/master/readme.md)
 
 ## Use of osmnx package
