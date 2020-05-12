@@ -1,5 +1,0 @@
-numpy
-osmnx
-networkx
-Pillow
-imageio
