@@ -3,7 +3,10 @@ import numpy as np
 import osmnx as ox
 import pandas as pd
 from ipywidgets import interact, interactive, fixed, interact_manual
+from matplotlib.collections import LineCollection
 import ipywidgets as widgets
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 
 def type_transport(transport):
