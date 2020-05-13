@@ -1,13 +1,9 @@
 import networkx as nx
-import numpy as np
 import osmnx as ox
-import pandas as pd
-from ipywidgets import interact, interactive, fixed, interact_manual
+import time
 from matplotlib.collections import LineCollection
-import ipywidgets as widgets
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
 
 def type_transport(transport):
     """This function plot on interactive map of the shortest path for different type of transport from La Maison du Lez, Montpellier, France 
@@ -15,7 +11,7 @@ def type_transport(transport):
     
     Parameters
     ----------
-    transport : type of transport to choose to plot his path
+    transport : string, type of transport to choose to plot his path
     
     Returns
     -------
@@ -33,13 +29,57 @@ def type_transport(transport):
     plt.show
     return()
 
+
+def distance_type_transport(transport):
+    """This function calculates the distance between La Maison du Lez, Montpellier, France and Place 
+    to Eugène Bataillon, Montpellier, France in meters.
+
+    Parameters
+    ----------
+    transport : string, type of transport to choose to calculate the distance
+
+    Returns
+    -------
+    the distance between these two places according to the type of transport
+    """
+    G = ox.graph_from_place(
+        'Montpellier, Hérault, France', network_type=transport)
+    origin_point = ox.geo_utils.geocode('Maison du Lez, Montpellier, France')
+    destination_point = ox.geo_utils.geocode(
+        'Place Eugène Bataillon, Montpellier, France')
+    origin_node = ox.get_nearest_node(G, origin_point)
+    destination_node = ox.get_nearest_node(G, destination_point)
+    distance = nx.shortest_path_length(
+        G, origin_node, destination_node, weight='length')
+    return(distance)
+
+
+def times(transport, function):
+    """This function calculates the time that the given function takes to compile according to the type of transport chosen.
+
+    Parameters
+    ----------
+    transport : string, type of transport 
+    function : the function you want to use
+
+    Returns
+    -------
+    the time in seconds that the function took to compile according to the type of transport
+    """
+    start = time.time()
+    graphe= function(transport)
+    end = time.time()
+    temps = end - start
+    return(temps)
+
+
 def animation_type_transport(transport):
     """This function makes it possible to make an animation; plot the shortest route for different types of transport between 
     La maison du Lez, Montpellier, France and Place Eugène Bataillon, Montpellier, France.
 
     Parameters
     ----------
-    transport : type of transport choose to animate his path
+    transport : string, type of transport choose to animate his path
 
     Returns
     ----------

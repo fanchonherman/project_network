@@ -1,4 +1,6 @@
-__pycache__/
+__pycache__
 .vscode/*
 my_module
 _build
+report/cache
+report/.ipynb_checkpoints/
