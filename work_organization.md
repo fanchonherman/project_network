@@ -8,6 +8,22 @@ Welcome to __"montpellier_network"__, in this section we will describe the repar
 
 * __Video and widget__ : finally, x3 will create a code that is able to read images and create a video and a widget out of them. Therefore, it will use the images created in the previous task to create a widget and a video. 
 
-The widget and the animation were created by Fanchon.
+
+## Distribution of tasks
+
+Fanchon : 
+* widget 
+* animation 
+* histogram
+* sparse matrix
+* package structure 
+* funtion test
+
+Ryma :
+* function test 
+
+Abdesstar :
+* class
+* package structure
 
 Please note that this repartition is flexible and can be changed.
