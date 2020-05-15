@@ -30,7 +30,7 @@ def type_transport(transport):
     # finding the shortest path
     route = nx.shortest_path(G, origin_node, destination_node)
     # plot the map graph
-    fig, ax = ox.plot_graph_route(G, route, origin_point=origin_point, destination_point=destination_point)
+    fig, ax = ox.plot_graph_route(G, route, origin_point=origin_point, destination_point=destination_point, route_linewidth=2)
     plt.show
     return()
 
@@ -72,7 +72,7 @@ def times(transport, function):
     the time in seconds that the function took to compile according to the type of transport.
     """
     start = time.time()
-    graphe= function(transport)
+    graphe = function(transport)
     end = time.time()
     temps = end - start
     return(temps)
@@ -113,6 +113,7 @@ def animation_type_transport(transport):
 
     ani = animation.FuncAnimation(
         fig, animate, frames=200, interval=100, blit=True, repeat=False)
+
     plt.show()
     return(ani)
 
@@ -133,3 +134,4 @@ class network:
         distance = nx.shortest_path_length(
             G, origin_node, destination_node, weight='length')
         return(distance)
+
