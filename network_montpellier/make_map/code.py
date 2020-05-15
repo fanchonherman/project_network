@@ -4,9 +4,13 @@ import time
 from matplotlib.collections import LineCollection
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import folium
+from folium import plugins
+import numpy as np
+import pandas as pd
 
 def type_transport(transport):
-    """This function plot on interactive map of the shortest path for different type of transport from La Maison du Lez, Montpellier, France 
+    """This function plot the shortest path for different type of transport from La Maison du Lez, Montpellier, France 
     to Place to Eugène Bataillon, Montpellier, France.
     
     Parameters
@@ -15,7 +19,7 @@ def type_transport(transport):
     
     Returns
     -------
-    an interactive map showing the shortest path.
+    a map showing the shortest path.
     """ 
     # download the map as a graph object 
     G = ox.graph_from_place(
@@ -34,6 +38,44 @@ def type_transport(transport):
     plt.show
     return()
 
+
+#Or we can devide the function above in two functions
+def create_graph(loc, transport_mode, loc_type="address"):
+    """This function Create a networkx graph from any location and any 
+    transport mode(type) either from an address or a points(coordinates)
+    OSM data within some distance of some address.
+    
+    Parameters
+    ----------
+    loc : the address to use as the central point around which to construct the graph
+    transport_mode : string, type of street network to get.
+    loc_type : string, type of localisation to choose 
+
+    Returns
+    -------
+    networkx multidigraph for the chosen location.
+    """ 
+    # Transport mode = ‘walk’, ‘bike’, ‘drive’, ‘drive_service’, ‘all’, ‘all_private’, ‘none’
+    if loc_type == "address":
+        G = ox.graph_from_address(loc, network_type=transport_mode)
+    elif loc_type == "points":
+        G = ox.graph_from_point(loc, network_type=transport_mode )
+    return G
+
+
+def short_path(graph, origin, destination):  
+    """This function plot the shortest path in the graph and calculate his length.
+    
+    Returns
+    -------
+    a networkx graph showing the shortest path.
+    """  
+    origin_node = ox.get_nearest_node(graph, origin)
+    destination_node = ox.get_nearest_node(graph, destination)
+    route = nx.shortest_path(graph, origin_node, destination_node)
+    route_lentgh =shortest_path_length(graph, origin_node, destination_node)
+    chemin = ox.plot_graph_route(graph, route)
+    return route, route_lentgh
 
 def distance_type_transport(transport):
     """This function calculates the distance between La Maison du Lez, Montpellier, France and Place 
@@ -135,3 +177,112 @@ class network:
             G, origin_node, destination_node, weight='length')
         return(distance)
 
+
+
+def geojson_data(transport):  
+    """This function create a data frame composed of latitude, longitude of 
+    a shortest path's nodes.
+    
+    Returns
+    -------
+    pandas.data.frame.
+    """ 
+    G = ox.graph_from_place('Montpellier, Hérault, France', network_type=transport)  
+    origin = ox.geo_utils.geocode('Maison du Lez, Montpellier, France')
+    destination= ox.geo_utils.geocode('Place Eugène Bataillon, Montpellier, France')
+    origin_node = ox.get_nearest_node(G, origin)
+    destination_node = ox.get_nearest_node(G, destination)
+    route = nx.shortest_path(G, origin_node, destination_node)
+    
+    df=pd.DataFrame(ox.node_list_to_coordinate_lines(G, route))
+    data=list(map(list, df[0][0:len(df[0])])) 
+
+    lon = [origin[1]] 
+    for i in range(len(data)):
+        lon.append(data[i][0])
+    
+    lat = [origin[0]]
+    for i in range(len(data)):
+        lat.append(data[i][1])
+
+    m= list()
+    for i in range(1, 3*len(lat), 3):
+        m.append(i)    
+    l=len(m)    
+    m = list(map(int, m))
+
+    df=pd.DataFrame({'lon' : lon,
+                     'lat' : lat, 'm' : m},columns=['lon','lat','m'])
+    new_row = {'lon':destination[1], 'lat':destination[0], 'm':df['m'][l-1]+3}
+
+    df = df.append(new_row, ignore_index=True)
+    return(df)
+
+
+def geojson_visualization(df):
+    """This function animate the shortest path using Timestamped GeoJson.
+    
+    Parameters
+    ----------
+    df : data.frame, longtitude an latitude for each node in the shortest path.
+    
+    Returns
+    -------
+    an interactive map drawing the shortest path.
+    """ 
+    m = folium.Map(
+    location=[43.61032245, 3.8966295],
+    tiles="CartoDB dark_matter",
+    zoom_start=13)
+    
+    
+    lines = [
+        {
+            'coordinates': [
+                [df.loc[i, 'lon'], df.loc[i, 'lat']],
+                [df.loc[i+1, 'lon'], df.loc[i+1, 'lat']],
+            ],
+            'dates': [
+                pd.to_datetime(df.loc[i,'m'], unit='m').__str__(),
+                pd.to_datetime(df.loc[i+1,'m'], unit='m').__str__()
+            ],
+            'color': 'red'
+        }
+        for i in range(len(df)-1)
+    ]
+    
+     
+    features = [
+        {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': line['coordinates'],
+            },
+            'properties': {
+                'times': line['dates'],
+                'style': {
+                    'color': line['color'],
+                    'weight': 4  
+                },
+                'icon': 'circle',
+                'iconstyle':{'radius' : 1}
+                #                 'iconUrl': "https://www.google.fr/imgres?imgurl=https%3A%2F%2Fstatic.thenounproject.com%2Fpng%2F13133-200.png&imgrefurl=https%3A%2F%2Fthenounproject.com%2Fterm%2Fpedestrian%2F162693%2F&tbnid=Ih-71qXZVedo9M&vet=12ahUKEwiP0vvAkK7pAhUXMRoKHbSzD7oQMygAegUIARDlAQ..i&docid=MBEwWPNEKbzbsM&w=200&h=200&q=icon%20pedestrian&ved=2ahUKEwiP0vvAkK7pAhUXMRoKHbSzD7oQMygAegUIARDlAQ",
+                #                 'iconSize': [16, 16]},
+                #             'popupTemplate' : "<strong>{pedestrian}</strong>"
+            }
+        }
+        for line in lines
+    ]
+    
+    plugins.TimestampedGeoJson({
+        'type': 'FeatureCollection',
+        'features': features,
+        }, 
+        period='PT1M',
+        #     duration = 'PT1M',
+        add_last_point=True).add_to(m)
+
+
+    m.save('geojson_visualization.html')
+    return m
