@@ -16,10 +16,10 @@ If you have any trouble with the installation, follow this [link](https://github
 ## Montpellier_Network Installation 
 To install the package Montpellier_Network, please follow these steps :
 
-   $\bullet$ Clone this repository to your computer    
-   $\bullet$ From your terminal navigate to this repository    
-   $\bullet$ Now type : `pip install -e .`
-
+   1. Clone this repository to your computer    
+   2. From your terminal navigate to this repository    
+   3. Now type : `pip install -e .`
+   
 ## Use of osmnx package
 Follow this link for [documentation](https://osmnx.readthedocs.io/en/stable/osmnx.html#module-osmnx.settings)
 
