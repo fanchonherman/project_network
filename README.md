@@ -5,13 +5,20 @@
 
 This is a python package name montpellier_network, that has for goal to create a video and a widget showing a car, a pedestrian and a bicycle going from "La Maison du Lez" to "Place Eugène Bataillon" in Montpellier with the shortest path possible.
 
-## Installation 
+## Osmnx Installation 
 To install the package osmnx you can use this commands :
 ```{bash}
 $ conda config --prepend channels conda-forge
 $ conda create -n ox --strict-channel-priority osmnx
 ```
 If you have any trouble with the installation, follow this [link](https://github.com/NREL/OpenOA/blob/master/readme.md)
+
+## Montpellier_Network Installation 
+To install the package Montpellier_Network, please follow these steps :
+
+   $\bullet$ Clone this repository to your computer    
+   $\bullet$ From your terminal navigate to this repository    
+   $\bullet$ Now type : `pip install -e .`
 
 ## Use of osmnx package
 Follow this link for [documentation](https://osmnx.readthedocs.io/en/stable/osmnx.html#module-osmnx.settings)
