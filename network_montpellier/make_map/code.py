@@ -1,13 +1,14 @@
+import folium
+import time
 import networkx as nx
 import osmnx as ox
-import time
-from matplotlib.collections import LineCollection
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import folium
-from folium import plugins
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.collections import LineCollection
+from folium import plugins
+
 
 def type_transport(transport):
     """This function plot the shortest path for different type of transport from La Maison du Lez, Montpellier, France 
@@ -76,6 +77,7 @@ def short_path(graph, origin, destination):
     route_lentgh = nx.shortest_path_length(graph, origin_node, destination_node)
     chemin = ox.plot_graph_route(graph, route)
     return chemin, route_lentgh
+
 
 def distance_type_transport(transport):
     """This function calculates the distance between La Maison du Lez, Montpellier, France and Place 
@@ -176,7 +178,6 @@ class network:
         distance = nx.shortest_path_length(
             G, origin_node, destination_node, weight='length')
         return(distance)
-
 
 
 def geojson_data(transport):  
@@ -291,8 +292,7 @@ def geojson_visualization(df):
     m.save('geojson_visualization.html')
     return m
 
-transport = 'bike', 'walk', 'drive'
-parameter = transport or data
+
 def GeoJson_times(parameter, function):
     """This function calculates the time that the given function takes to compile according to the type of transport chosen.
 
