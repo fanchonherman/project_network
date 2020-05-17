@@ -73,9 +73,9 @@ def short_path(graph, origin, destination):
     origin_node = ox.get_nearest_node(graph, origin)
     destination_node = ox.get_nearest_node(graph, destination)
     route = nx.shortest_path(graph, origin_node, destination_node)
-    route_lentgh =shortest_path_length(graph, origin_node, destination_node)
+    route_lentgh = nx.shortest_path_length(graph, origin_node, destination_node)
     chemin = ox.plot_graph_route(graph, route)
-    return route, route_lentgh
+    return chemin, route_lentgh
 
 def distance_type_transport(transport):
     """This function calculates the distance between La Maison du Lez, Montpellier, France and Place 
@@ -205,15 +205,19 @@ def geojson_data(transport):
     for i in range(len(data)):
         lat.append(data[i][1])
 
-    m= list()
-    for i in range(1, 3*len(lat), 3):
-        m.append(i)    
-    l=len(m)    
-    m = list(map(int, m))
-
+    if transport == 'drive': t= 4 
+    elif transport == 'bike': t = 3.5
+    elif transport == 'walk': t = 3 
+    
+    time= list()
+    for i in np.arange(1, t*len(lat), t):
+        time.append(i)    
+        
+    time = list(map(int, time))
+    l = len(time)
     df=pd.DataFrame({'lon' : lon,
-                     'lat' : lat, 'm' : m},columns=['lon','lat','m'])
-    new_row = {'lon':destination[1], 'lat':destination[0], 'm':df['m'][l-1]+3}
+                     'lat' : lat, 'time' : time},columns=['lon','lat','time'])
+    new_row = {'lon':destination[1], 'lat':destination[0], 'time':df['time'][l-1]+t}
 
     df = df.append(new_row, ignore_index=True)
     return(df)
@@ -232,7 +236,7 @@ def geojson_visualization(df):
     """ 
     m = folium.Map(
     location=[43.61032245, 3.8966295],
-    tiles="CartoDB dark_matter",
+    tiles="cartodbpositron",
     zoom_start=13)
     
     
@@ -243,8 +247,8 @@ def geojson_visualization(df):
                 [df.loc[i+1, 'lon'], df.loc[i+1, 'lat']],
             ],
             'dates': [
-                pd.to_datetime(df.loc[i,'m'], unit='m').__str__(),
-                pd.to_datetime(df.loc[i+1,'m'], unit='m').__str__()
+                pd.to_datetime(df.loc[i,'time'], unit='m', origin=pd.Timestamp('2020-05-19')).__str__(),
+                pd.to_datetime(df.loc[i+1,'time'], unit='m', origin=pd.Timestamp('2020-05-19')).__str__()
             ],
             'color': 'red'
         }
@@ -279,10 +283,30 @@ def geojson_visualization(df):
         'type': 'FeatureCollection',
         'features': features,
         }, 
-        period='PT1M',
+        period='PT1H',
         #     duration = 'PT1M',
         add_last_point=True).add_to(m)
 
 
     m.save('geojson_visualization.html')
     return m
+
+transport = 'bike', 'walk', 'drive'
+parameter = transport or data
+def GeoJson_times(parameter, function):
+    """This function calculates the time that the given function takes to compile according to the type of transport chosen.
+
+    Parameters
+    ----------
+    parameter : string or data frame, type of transport of GeoJson data.
+    function : the function you want to use.
+
+    Returns
+    -------
+    the time in seconds that the function took to compile according to the type of transport.
+    """
+    start = time.time()
+    graphe = function(parameter)
+    end = time.time()
+    temps = end - start
+    return(temps)
