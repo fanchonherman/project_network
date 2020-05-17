@@ -1,4 +1,6 @@
 networkx==2.4
 osmnx==0.11.4
 matplotlib
-
+numpy 
+Pillow
+imageio

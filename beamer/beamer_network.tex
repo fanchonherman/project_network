@@ -217,6 +217,71 @@ To see the animations and the widget, click on this link \href{https://github.co
 \end{enumerate}
 \end{block}
 \end{frame}
+\begin{frame}{Animation by storing images}
+\center \Large \Huge Animation by storing images
+\section{Animation by storing images}
+\end{frame} 
+
+
+
+\begin{frame}{Steps}
+$\bullet$ Creating a list of more than 200 points situated on the path between the origin and the destination points. \\
+$\bullet$ For each point, creating an image of the graph showing the icon on that point. \\
+$\bullet$ Storing the images one by one in a folder named "temp", created on the fly during the process. \\
+$\bullet$ Creating the animation by repeatedly shoing the images one by one.
+\end{frame} 
+
+ 
+
+\begin{frame}{Generating points}
+\center \Large \Huge Generating points
+\section{Generating points}
+\end{frame} 
+
+\begin{frame}{Generating points}
+    $\bullet$ route variable is not enough.\\
+    $\bullet$ points\_generate().\\
+    $\bullet$ Removing some points that are too close to each others. \\
+    $\bullet$ Adding more points.
+\end{frame}
+
+\begin{frame}{Generating images}
+\center \Large \Huge Generating images
+\section{Generating images}
+\end{frame} 
+
+
+\begin{frame}{Translation}
+	$\bullet$ AnnotationBbox().\\
+    $\bullet$ for each point, create an image showing the icon in the point.\\
+    $\bullet$ translation mouvement. \\
+\end{frame} 
+
+
+\begin{frame}{Rotation}
+	$\bullet$ PILLOW package.\\
+    $\bullet$ rotate() method on the Image object.\\
+    $\bullet$ $bearing(p(i-1), p(i)) + 180 - bearing(p(i+1), p(i)).$ \\
+\end{frame} 
+
+
+
+\begin{frame}{Pedestrian walking effect}
+	$\bullet$ PILLOW package.\\
+    $\bullet$ mirror() methode of the ImageOps module.\\
+    $\bullet$ alternate between the icon and it's mirror image. \\
+\end{frame} 
+
+\begin{frame}{Animation}
+\center \Large \Huge Animation
+\section{Animation}
+\end{frame} 
+
+\begin{frame}{Animation}
+	$\bullet$ Transforming png images to np.array using imagio package.\\
+    $\bullet$ storing the np.arrays one by one in a list.\\
+    $\bullet$ using animation.FuncAnimation() to animate them. \\
+\end{frame} 
 
 
 \end{document}
