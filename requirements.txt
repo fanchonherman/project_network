@@ -1,4 +1,5 @@
 networkx==2.4
+rtree
 osmnx
 matplotlib
 numpy 
