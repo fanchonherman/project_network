@@ -20,6 +20,113 @@ from PIL import Image, ImageOps
 import imageio
 plt.ioff()
 
+from matplotlib.animation import FuncAnimation
+import plotly_express as px
+from IPython.display import HTML
+
+
+
+
+
+def animation_route(transport):
+    city = ox.gdf_from_place('Montpellier, France')
+    
+    G = ox.graph_from_place('Montpellier, France', network_type=transport)
+    G = ox.add_edge_speeds(G) 
+    G = ox.add_edge_travel_times(G) 
+    
+    start = (43.61032245, 3.8966295)
+    end = (43.6309201, 3.8611052550025553)
+    start_node = ox.get_nearest_node(G, start)
+    end_node = ox.get_nearest_node(G, end)
+    route = nx.shortest_path(G, start_node, end_node)
+    route_len = nx.shortest_path_length(G, start_node, end_node)
+    
+    # bounds for axis
+    x_min, y_min, x_max, y_max = city.total_bounds
+    
+    fig, ax = ox.plot_graph_route(G, route, route_linewidth=1, node_size=0, edge_linewidth=0.3, show=False, close=False)
+    city.plot(ax=ax, edgecolor='black', linewidth=0.5, alpha=0.1)
+    ax.set(xlim=(x_min, x_max), ylim=(y_min, y_max))
+    
+    sc = ax.scatter(G.nodes[route[0]]['x'], # x coordiante 
+                                   G.nodes[route[0]]['y'], # y coordiante 
+                                   s=100, c="b", alpha=1)
+    
+    def animate(i):               
+        x = G.nodes[route[i]]['x']
+        y = G.nodes[route[i]]['y']
+        sc.set_offsets(np.c_[x, y])
+        return sc
+   
+
+    anim = FuncAnimation(fig, animate, frames=route_len)
+    anim.save('animation_weight.gif', fps=10, writer = 'imagemagick')
+
+    return HTML(anim.to_jshtml())
+
+
+
+
+
+
+
+
+def route_animation(transport):
+    #calculate the shortest
+    G = ox.graph_from_place('Montpellier, France', network_type=transport)
+    start = (43.61032245, 3.8966295)
+    end = (43.61032245, 3.8966295)
+    start_node = ox.get_nearest_node(G, start)
+    end_node = ox.get_nearest_node(G, end)
+    route = nx.shortest_path(G, start_node, end_node)
+
+    #listing nodes and coordinates from the route
+    node_start = []
+    node_end = []
+    X_to = []
+    Y_to = []
+    X_from = []
+    Y_from = []
+    length = []
+    for u, v in zip(route[:-1], route[1:]):
+        node_start.append(u)
+        node_end.append(v)
+        length.append(round(G.edges[(u, v, 0)]['length']))
+        X_from.append(G.nodes[u]['x'])
+        Y_from.append(G.nodes[u]['y'])
+        X_to.append(G.nodes[v]['x'])
+        Y_to.append(G.nodes[v]['y'])
+
+    #create a data frame    
+    df = pd.DataFrame(list(zip(node_start, node_end, X_from, Y_from, X_to, Y_to, length, travel_time)), 
+                      columns =["node_start", "node_end", "X_from", "Y_from", "X_to", "Y_to", "length", "travel_time"])
+    df.head()
+      
+    start = df[df["node_start"] == start_node]
+    end = df[df["node_end"] == end_node]
+    
+    #animate the route with Plotly Express 
+    fig = px.scatter_mapbox(df, lon= "X_from", lat="Y_from", zoom=13, width=1000, height=800, 
+                        animation_frame=df.index)
+    fig.update_layout(mapbox_style="stamen-toner")
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    
+    fig.data[0].marker = dict(size = 20, color="black")
+    fig.add_trace(px.scatter_mapbox(start, lon= "X_from", lat="Y_from").data[0])
+    
+    fig.data[1].marker = dict(size = 15, color="red")
+    fig.add_trace(px.scatter_mapbox(end, lon= "X_from", lat="Y_from").data[0])
+    
+    fig.data[2].marker = dict(size = 15, color="green")
+    fig.add_trace(px.line_mapbox(df, lon= "X_from", lat="Y_from").data[0])
+    
+    fig.write_html("route_animation.html")
+    fig.show()
+
+
+
+
 
 def type_transport(transport):
     """This function plot the shortest path for different type of transport from La Maison du Lez, Montpellier, France 
