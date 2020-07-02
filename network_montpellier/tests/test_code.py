@@ -17,14 +17,7 @@ import network_montpellier as net
 def test_distance():
     np.isclose(net.distance_type_transport('bike'), 4339.374)
 
-    
-
-@check_figures_equal()
-def test_graph(fig_test, fig_ref):
-     fig_test.net.create_graph('Montpellier, France', 'walk', loc_type="address")
-     fig_ref.ox.graph_from_address('Montpellier, France', network_type='walk') 
-    
-
+      
 
 
 def test_short_path_length():
