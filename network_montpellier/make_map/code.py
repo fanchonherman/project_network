@@ -20,6 +20,8 @@ from PIL import Image, ImageOps
 import imageio
 plt.ioff()
 
+import geopandas as gpd
+from shapely.geometry import Point, LineString
 from matplotlib.animation import FuncAnimation
 import plotly_express as px
 from IPython.display import HTML
